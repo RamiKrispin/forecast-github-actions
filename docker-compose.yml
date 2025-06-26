@@ -1,0 +1,49 @@
+networks:
+  dem:
+    driver: bridge
+services:
+  python:
+    image: docker.io/rkrispin/python-forecast-dev:arm64.0.2.2
+    volumes:
+      # Mount the root folder that contains .git
+      - .:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=my_db
+      - DATABASE_URL=postgresql://postgres:password@postgress:5432/my_db
+    networks:
+      - dem
+  postgres:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      - .:/workspace:cached
+      - ./postgresql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres     
+      - POSTGRES_DB=my_db
+    networks:
+      - dem
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    volumes:
+      - ./postgresql/pgadmin_data:/var/lib/pgadmin
+      - ./postgresql/servers.json:/pgadmin4/servers.json 
+    networks:
+      - dem

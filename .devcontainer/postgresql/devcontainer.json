@@ -1,7 +1,11 @@
 {
-    "name": "python-dev",
-    "image": "docker.io/rkrispin/python-dev:arm64.0.2.2",
-    "customizations": {
+	"name": "Postgresql Container",
+	"dockerComposeFile": ["../../docker-compose.yml"],
+	"service": "postgres",
+	"shutdownAction": "none",
+	"workspaceFolder": "/workspace/postgresql",
+    "forwardPorts": [5432],
+	"customizations": {
         "vscode": {
             "settings": {
                 "python.defaultInterpreterPath": "/opt/python-3.11-dev/bin/python3",
@@ -35,7 +39,9 @@
                 // Misc
                 "streetsidesoftware.code-spell-checker",
                 // Code
-                "continue.continue"
+                "continue.continue",
+                // DB
+                "ms-ossdata.vscode-pgsql"
 
             ]
         }
