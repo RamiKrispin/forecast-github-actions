@@ -2,7 +2,7 @@
 
 # Image settings
 user_name=rkrispin
-image_label=python-dev
+image_label=python-forecast-dev
 image_tag=0.2.2
 quarto_ver="1.7.32"
 python_ver=3.11
