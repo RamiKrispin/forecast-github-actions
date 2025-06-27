@@ -14,7 +14,6 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=postgres
       - POSTGRES_DB=my_db
-      - DATABASE_URL=postgresql://postgres:password@postgress:5432/my_db
     networks:
       - dem
   postgres:
@@ -24,6 +23,7 @@ services:
     volumes:
       - .:/workspace:cached
       - ./postgresql/initdb.d:/docker-entrypoint-initdb.d
+      - $POSTGRES_DATABASES_PATH/forecast-github-action:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=postgres     
